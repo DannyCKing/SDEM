@@ -1,0 +1,65 @@
+﻿<Window x:Class="SDEMViews.MainChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SDEM" Height="600" Width="900">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid x:Name="ChatLeftPane" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Label Content="{Binding Username}" />
+            </Grid>
+            <ScrollViewer Grid.Row="1">
+                <Grid >
+                    <ListBox  ItemsSource="{Binding ChatUsers}" SelectedItem="{Binding SelectedChatUser}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding UserName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </ScrollViewer>
+            
+            <Grid Grid.Row="3">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="{Binding TCPServerAddress}" />
+                    <Label Content="{Binding TCPServerPort}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+        
+        <Grid Grid.Column="1" x:Name="ChatMessagesPane" DataContext="{Binding CurrentConversation}">
+            <ScrollViewer>
+                    <ListBox ItemsSource="{Binding Messages}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                    <Label Content="{Binding Sender}" />
+                                    <Label Content="{Binding MessageDateStamp}" />
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Text="{Binding MessageContent}" TextWrapping="Wrap" />
+                            </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
