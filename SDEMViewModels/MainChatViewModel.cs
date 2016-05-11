@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using SDEMViewModels.Global;
 using SDEMViewModels.MessageHandlers;
@@ -65,6 +65,15 @@ namespace SDEMViewModels
                 }
 
                 return _ChatUsers;
+            }
+            set
+            {
+                if (value == _ChatUsers)
+                    return;
+
+                _ChatUsers = value;
+
+                RaisePropertyChanged("ChatUsers");
             }
         }
 
@@ -147,7 +156,7 @@ namespace SDEMViewModels
                 // to the selected user
                 if (!Conversations.ContainsKey(_SelectedChatUser))
                 {
-                    Conversations.Add(_SelectedChatUser, new ConversationViewModel());
+                    Conversations.Add(_SelectedChatUser, new ConversationViewModel(_SelectedChatUser));
                 }
                 CurrentConversation = Conversations[_SelectedChatUser];
             }
@@ -233,11 +242,11 @@ namespace SDEMViewModels
             MyIdentifier = Settings.Instance.UserId;
 
             TCPServerPort = tcpPort;
-            //TCPServerAddress = GetPublicIP();
+            TCPServerAddress = GetPublicIP();
             _TCPServer = new TCPServerListener(tcpPort);
             _SocketThread = new Thread(_TCPServer.StartListener);
             _SocketThread.Start();
-            Discoverer.Start(MulticastIPAddress, MulticastPort, MyIdentifier);
+            Discoverer.Start(MulticastIPAddress, MulticastPort, MyIdentifier, TCPServerAddress, TCPServerPort);
         }
 
         public void MessageRecieved(string message)
@@ -253,20 +262,14 @@ namespace SDEMViewModels
 
         public string GetPublicIP()
         {
-            String direction = "";
-            WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
-            using (WebResponse response = request.GetResponse())
-            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+            string localIP;
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                direction = stream.ReadToEnd();
+                socket.Connect("10.0.2.4", 65530);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                localIP = endPoint.Address.ToString();
             }
-
-            //Search for the ip in the html
-            int first = direction.IndexOf("Address: ") + 9;
-            int last = direction.LastIndexOf("</body>");
-            direction = direction.Substring(first, last - first);
-
-            return direction;
+            return localIP;
         }
     }
 }

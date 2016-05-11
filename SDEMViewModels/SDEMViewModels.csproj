@@ -68,6 +68,7 @@
     <Compile Include="MessageViewModel.cs" />
     <Compile Include="Models\ChatUser.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\RelayCommand.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Global\XMLUtils.cs" />
     <Compile Include="TCPClient\ClientStateObject.cs" />
     <Compile Include="TCPClient\TCPClient.cs" />
+    <Compile Include="TCPClient\TCPClientListener.cs" />
+    <Compile Include="TCPClient\TCPClientsManager.cs" />
     <Compile Include="TCPServer\StateObject.cs" />
     <Compile Include="TCPServer\TCPServerListener.cs" />
   </ItemGroup>
