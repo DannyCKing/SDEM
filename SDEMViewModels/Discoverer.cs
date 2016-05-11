@@ -20,9 +20,9 @@ namespace SDEMViewModels
 
         private static int MulticastPort;
 
-        private static string MyIPAddress = "";
+        private static string TCPIPAddress;
 
-        private static string MyPort = "";
+        private static int TCPPort;
 
         private static Guid MyIdentifier;
 
@@ -34,16 +34,21 @@ namespace SDEMViewModels
 
         public static Action<string> MessageRecieved = null;
 
-        public static void Start(string ipAddress, int port, Guid identifier)
+        public static void Start(string multiCastIP, int multicastPort, Guid identifier, string tcpAddress, int tcpPort)
         {
-            MulticastIPAddress = ipAddress;
-            MulticastPort = port;
+            MulticastIPAddress = multiCastIP;
+            MulticastPort = multicastPort;
             MyIdentifier = identifier;
+            TCPIPAddress = tcpAddress;
+            TCPPort = tcpPort;
 
             _UdpClient = new UdpClient();
 
             try
             {
+                _UdpClient.ExclusiveAddressUse = false;
+                _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
                 _UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, MulticastPort));
 
                 _UdpClient.JoinMulticastGroup(IPAddress.Parse(MulticastIPAddress));
@@ -56,7 +61,7 @@ namespace SDEMViewModels
                 Settings.IsTestAccount = true;
                 // Just start tcp chat server
                 _UdpClient.ExclusiveAddressUse = false;
-                MulticastPort = MulticastPort + 1435;
+                _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 _UdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, MulticastPort));
 
                 _UdpClient.JoinMulticastGroup(IPAddress.Parse(MulticastIPAddress));
@@ -68,7 +73,7 @@ namespace SDEMViewModels
 
         static void Sender()
         {
-            var aliveMessageContent = new AliveMessageContent("", 0, Settings.Instance.UserId, Settings.Instance.Username);
+            var aliveMessageContent = new AliveMessageContent(TCPIPAddress, TCPPort, Settings.Instance.UserId, Settings.Instance.Username);
             var aliveMessageString = AliveMessageCreator.CreateMessage(aliveMessageContent);
             var aliveMessage = Encoding.UTF8.GetBytes(aliveMessageString);
             IPEndPoint mcastEndPoint = new IPEndPoint(IPAddress.Parse(MulticastIPAddress), MulticastPort);
@@ -92,7 +97,7 @@ namespace SDEMViewModels
                     MessageRecieved(messageAsString);
                 }
 
-                Console.WriteLine(messageAsString);
+                //Console.WriteLine(messageAsString);
                 //var handler = MessageHandlerFactory.GetMessageHandler(messageAsString);
 
                 // cache item
@@ -114,7 +119,7 @@ namespace SDEMViewModels
                     }
                 }
 
-                Console.WriteLine(from.Address.ToString());
+                //Console.WriteLine(from.Address.ToString());
             }
         }
 

@@ -4,6 +4,7 @@ using System.Windows;
 using SDEMViewModels.Global;
 using SDEMViewModels.Messages;
 using SDEMViewModels.Models;
+using SDEMViewModels.TCPClient;
 
 namespace SDEMViewModels.MessageHandlers
 {
@@ -17,8 +18,9 @@ namespace SDEMViewModels.MessageHandlers
 
         public override void HandleMessageType(MainChatViewModel mainChatViewModel, string message)
         {
-            AliveMessageContent messageContent = MessageParser.ParseMessage(message) as AliveMessageContent;
-            if (messageContent.SenderId == Settings.Instance.UserId)
+            AliveMessageContent msg = MessageParser.ParseMessage(message) as AliveMessageContent;
+            //Console.WriteLine(msg.Username);
+            if (msg.SenderId == Settings.Instance.UserId)
             {
                 // this message is from yourself
                 // you can ignore it
@@ -26,14 +28,16 @@ namespace SDEMViewModels.MessageHandlers
             else
             {
                 // this message is from another
-                var fromUser = mainChatViewModel.ChatUsers.FirstOrDefault(x => x.UserId == messageContent.SenderId);
+                var fromUser = mainChatViewModel.ChatUsers.FirstOrDefault(x => x.UserId == msg.SenderId);
                 if (fromUser == null)
                 {
-                    fromUser = new ChatUser() { UserId = messageContent.SenderId, UserName = messageContent.Username };
+                    var tcplistener = new TCPClientListener(msg.TCPServerAddress, msg.TCPPort);
+                    fromUser = new ChatUser(msg.SenderId, msg.Username, tcplistener);
+                    fromUser.TCPClient.StartClient();
                     Application.Current.Dispatcher.Invoke(new Action(() => { mainChatViewModel.ChatUsers.Add(fromUser); }));
                 }
 
-                fromUser.UserStatus = messageContent.CurrentStatus;
+                fromUser.UserStatus = msg.CurrentStatus;
             }
         }
     }
