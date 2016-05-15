@@ -12,7 +12,7 @@ namespace SDEMViewModels
 {
     public class Discoverer
     {
-        private static GetMessageHandlerFactory MessageHandlerFactory = new GetMessageHandlerFactory();
+        private static MessageHandlerFactory MessageHandlerFactory = new MessageHandlerFactory();
 
         private static AliveMessageCreator AliveMessageCreator = new AliveMessageCreator();
 

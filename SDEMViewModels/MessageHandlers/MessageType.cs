@@ -6,6 +6,8 @@ namespace SDEMViewModels.MessageHandlers
         Alive,
         DirectMessage,
         ReadReciept,
+        Typing,
+        StartedConversation,
         Unknown
     }
 }

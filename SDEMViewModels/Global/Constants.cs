@@ -20,7 +20,6 @@ namespace SDEMViewModels.Global
 
         public const int DEFAULT_MULTICAST_PORT = 42431;
 
-        public const int DEFAULT_TCP_SERVER_PORT = 43431;
 
         public const string APP_NAME = "SDEM";
 

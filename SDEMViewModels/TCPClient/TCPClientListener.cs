@@ -8,7 +8,9 @@ namespace SDEMViewModels.TCPClient
 {
     public class TCPClientListener
     {
-        private Socket _Client { get; set; }
+        private byte[] byteData = new byte[1024];
+
+        private Socket _ClientSocket { get; set; }
 
         // host for the remote device
         private readonly string _ServerAddress;
@@ -18,10 +20,6 @@ namespace SDEMViewModels.TCPClient
 
         // ManualResetEvent instances signal completion.
         private ManualResetEvent connectDone =
-            new ManualResetEvent(false);
-        private ManualResetEvent sendDone =
-            new ManualResetEvent(false);
-        private ManualResetEvent receiveDone =
             new ManualResetEvent(false);
 
         // The response from the remote device.
@@ -44,29 +42,19 @@ namespace SDEMViewModels.TCPClient
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, _ServerPort);
 
                 // Create a TCP/IP socket.
-                _Client = new Socket(AddressFamily.InterNetwork,
+                _ClientSocket = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect to the remote endpoint.
-                _Client.BeginConnect(remoteEP,
-                    new AsyncCallback(ConnectCallback), _Client);
+                _ClientSocket.BeginConnect(remoteEP,
+                    new AsyncCallback(OnConnect), _ClientSocket);
                 connectDone.WaitOne();
 
-                //// Send test data to the remote device.
-                //Send(client, "This is a test<EOF>");
-                //sendDone.WaitOne();
+                //_ClientSocket.BeginSend(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
 
-                //// Receive the response from the remote device.
-                Receive(_Client);
-                //receiveDone.WaitOne();
-
-                //// Write the response to the console.
-                //Console.WriteLine("Response received : {0}", response);
-
-                //// Release the socket.
-                //client.Shutdown(SocketShutdown.Both);
-                //client.Close();
-
+                byteData = new byte[1024];
+                //Start listening to the data asynchronously
+                _ClientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), null);
             }
             catch (Exception e)
             {
@@ -74,7 +62,7 @@ namespace SDEMViewModels.TCPClient
             }
         }
 
-        private void ConnectCallback(IAsyncResult ar)
+        private void OnConnect(IAsyncResult ar)
         {
             try
             {
@@ -96,25 +84,25 @@ namespace SDEMViewModels.TCPClient
             }
         }
 
-        private void Receive(Socket client)
-        {
-            try
-            {
-                // Create the state object.
-                ClientStateObject state = new ClientStateObject();
-                state.workSocket = client;
+        //private void Receive(Socket client)
+        //{
+        //    try
+        //    {
+        //        // Create the state object.
+        //        ClientStateObject state = new ClientStateObject();
+        //        state.workSocket = client;
 
-                // Begin receiving the data from the remote device.
-                client.BeginReceive(state.buffer, 0, ClientStateObject.BufferSize, 0,
-                    new AsyncCallback(ReceiveCallback), state);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
+        //        // Begin receiving the data from the remote device.
+        //        client.BeginReceive(state.buffer, 0, ClientStateObject.BufferSize, 0,
+        //            new AsyncCallback(ReceiveCallback), state);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.ToString());
+        //    }
+        //}
 
-        private void ReceiveCallback(IAsyncResult ar)
+        private void OnReceive(IAsyncResult ar)
         {
             try
             {
@@ -129,11 +117,11 @@ namespace SDEMViewModels.TCPClient
                 if (bytesRead > 0)
                 {
                     // There might be more data, so store the data received so far.
-                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
 
                     // Get the rest of the data.
                     client.BeginReceive(state.buffer, 0, ClientStateObject.BufferSize, 0,
-                        new AsyncCallback(ReceiveCallback), state);
+                        new AsyncCallback(OnReceive), state);
                 }
                 else
                 {
@@ -142,8 +130,6 @@ namespace SDEMViewModels.TCPClient
                     {
                         response = state.sb.ToString();
                     }
-                    // Signal that all bytes have been received.
-                    receiveDone.Set();
                 }
             }
             catch (Exception e)
@@ -158,8 +144,17 @@ namespace SDEMViewModels.TCPClient
             byte[] byteData = Encoding.UTF8.GetBytes(data);
 
             // Begin sending the data to the remote device.
-            _Client.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), _Client);
+            _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), _ClientSocket);
+        }
+
+        public void Send(byte[] data)
+        {
+            byte[] byteData = data;
+
+            // Begin sending the data to the remote device.
+            _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), _ClientSocket);
         }
 
         private void SendCallback(IAsyncResult ar)
@@ -172,9 +167,6 @@ namespace SDEMViewModels.TCPClient
                 // Complete sending the data to the remote device.
                 int bytesSent = client.EndSend(ar);
                 Console.WriteLine("Sent {0} bytes to server.", bytesSent);
-
-                // Signal that all bytes have been sent.
-                sendDone.Set();
             }
             catch (Exception e)
             {

@@ -67,6 +67,8 @@
     </Compile>
     <Compile Include="Converters\BoolToVisibility.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\ReverseNullToVisibilityConverter.cs" />
     <Compile Include="MainChatWindow.xaml.cs">
       <DependentUpon>MainChatWindow.xaml</DependentUpon>
     </Compile>

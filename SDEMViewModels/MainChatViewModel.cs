@@ -24,7 +24,7 @@ namespace SDEMViewModels
         private string _TCPServerAddress;
         private int _TCPServerPort;
         private string _Username;
-        private readonly GetMessageHandlerFactory MessageHandlerFactory = new GetMessageHandlerFactory();
+        private readonly MessageHandlerFactory MessageHandlerFactory = new MessageHandlerFactory();
 
         public Guid MyIdentifier { get; set; }
 
@@ -243,7 +243,7 @@ namespace SDEMViewModels
 
             TCPServerPort = tcpPort;
             TCPServerAddress = GetPublicIP();
-            _TCPServer = new TCPServerListener(tcpPort);
+            _TCPServer = new TCPServerListener(this, tcpPort);
             _SocketThread = new Thread(_TCPServer.StartListener);
             _SocketThread.Start();
             Discoverer.Start(MulticastIPAddress, MulticastPort, MyIdentifier, TCPServerAddress, TCPServerPort);

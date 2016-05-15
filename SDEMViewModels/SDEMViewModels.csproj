@@ -55,16 +55,21 @@
     <Compile Include="ConversationViewModel.cs" />
     <Compile Include="MessageHandlers\AliveMessageHandler.cs" />
     <Compile Include="MessageHandlers\BaseMessageHandler.cs" />
-    <Compile Include="MessageHandlers\GetMessageHandlerFactory.cs" />
+    <Compile Include="MessageHandlers\DirectMessageHandler.cs" />
+    <Compile Include="MessageHandlers\MessageHandlerFactory.cs" />
     <Compile Include="MessageHandlers\IMessageHandler.cs" />
     <Compile Include="MessageHandlers\MessageType.cs" />
     <Compile Include="Messages\AliveMessageContent.cs" />
     <Compile Include="Messages\AliveMessageCreator.cs" />
     <Compile Include="Messages\AliveMessageParser.cs" />
+    <Compile Include="Messages\DirectMessageContent.cs" />
+    <Compile Include="Messages\DirectMessageCreator.cs" />
+    <Compile Include="Messages\DirectMessageParser.cs" />
     <Compile Include="Messages\IMessageContent.cs" />
     <Compile Include="Messages\IMessageCreator.cs" />
     <Compile Include="Messages\IMessageParser.cs" />
     <Compile Include="Global\Constants.cs" />
+    <Compile Include="Messages\MessageHelper.cs" />
     <Compile Include="MessageViewModel.cs" />
     <Compile Include="Models\ChatUser.cs" />
     <Compile Include="Models\Message.cs" />
@@ -78,6 +83,7 @@
     <Compile Include="TCPClient\TCPClient.cs" />
     <Compile Include="TCPClient\TCPClientListener.cs" />
     <Compile Include="TCPClient\TCPClientsManager.cs" />
+    <Compile Include="TCPServer\ClientInfo.cs" />
     <Compile Include="TCPServer\StateObject.cs" />
     <Compile Include="TCPServer\TCPServerListener.cs" />
   </ItemGroup>

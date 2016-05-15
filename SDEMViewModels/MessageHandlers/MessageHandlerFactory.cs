@@ -1,9 +1,11 @@
 ﻿
 namespace SDEMViewModels.MessageHandlers
 {
-    public class GetMessageHandlerFactory
+    public class MessageHandlerFactory
     {
         private readonly AliveMessageHandler MyAliveMessageHandler = new AliveMessageHandler();
+
+        private readonly DirectMessageHandler MyDirectMessageHandler = new DirectMessageHandler();
 
         public IMessageHandler GetMessageHandler(string message)
         {
@@ -15,7 +17,7 @@ namespace SDEMViewModels.MessageHandlers
             }
             else if (messageType == MessageType.DirectMessage)
             {
-
+                return MyDirectMessageHandler;
             }
             else if (messageType == MessageType.ReadReciept)
             {
@@ -30,6 +32,8 @@ namespace SDEMViewModels.MessageHandlers
         {
             if (MyAliveMessageHandler.IsMessageThisType(message))
                 return MessageType.Alive;
+            else if (this.MyDirectMessageHandler.IsMessageThisType(message))
+                return MessageType.DirectMessage;
             else
                 return MessageType.Unknown;
 

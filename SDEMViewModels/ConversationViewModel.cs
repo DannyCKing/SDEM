@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using SDEMViewModels.Global;
+using SDEMViewModels.Messages;
 using SDEMViewModels.Models;
 
 namespace SDEMViewModels
@@ -56,6 +58,27 @@ namespace SDEMViewModels
 
         #endregion
 
+        #region CurrentMessageText
+
+        private string _CurrentMessage;
+
+        public string CurrentMessage
+        {
+            get
+            {
+                return _CurrentMessage;
+            }
+            set
+            {
+                if (_CurrentMessage == value)
+                    return;
+
+                _CurrentMessage = value;
+                RaisePropertyChanged("CurrentMessage");
+            }
+        }
+
+        #endregion
         public ConversationViewModel(ChatUser user)
         {
             User = user;
@@ -72,7 +95,13 @@ namespace SDEMViewModels
 
         private void SendMessage(object param = null)
         {
-            User.TCPClient.Send("Sending test data");
+            var directMessage = new DirectMessageContent(Settings.Instance.UserId, CurrentMessage);
+            var xml = new DirectMessageCreator().CreateMessage(directMessage);
+
+            User.TCPClient.Send(xml);
+
+            // Clear out message after sending it
+            CurrentMessage = "";
         }
     }
 }

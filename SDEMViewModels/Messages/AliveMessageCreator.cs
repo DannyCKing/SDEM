@@ -15,6 +15,7 @@ namespace SDEMViewModels.Messages
                         <Username>{4}</Username>
                         <Date>{5}</Date>
                         <CurrentStatus>{6}</CurrentStatus>
+                        <Extra>{7}</Extra>
                     </MessageDetails>
                 </Message>";
 
@@ -22,7 +23,8 @@ namespace SDEMViewModels.Messages
         {
             AliveMessageContent msg = arguments as AliveMessageContent;
 
-            return string.Format(ALIVE_MESSAGE, Constants.ALIVE_MESSAGE_HEADER, msg.SenderId, msg.TCPServerAddress, msg.TCPPort, msg.Username, DateTime.Now, msg.CurrentStatus);
+            var aliveMessageDateString = DateTime.Now.ToShortDateString();
+            return string.Format(ALIVE_MESSAGE, Constants.ALIVE_MESSAGE_HEADER, msg.SenderId, msg.TCPServerAddress, msg.TCPPort, msg.Username, aliveMessageDateString, msg.CurrentStatus, MessageHelper.GetExtraFluff());
         }
     }
 }

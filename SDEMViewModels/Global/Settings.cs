@@ -15,6 +15,8 @@ namespace SDEMViewModels.Global
 
         private static string TEST_USERNAME = "Second Chat User";
 
+        private const int DEFAULT_TCP_SERVER_PORT = 43431;
+
         private Settings()
         {
             if (!IsInitialized)
@@ -41,6 +43,17 @@ namespace SDEMViewModels.Global
             }
         }
 
+
+        public int TCPServerPort
+        {
+            get
+            {
+                if (IsTestAccount)
+                    return DEFAULT_TCP_SERVER_PORT + 100;
+                else
+                    return DEFAULT_TCP_SERVER_PORT;
+            }
+        }
 
         private string _Username;
 

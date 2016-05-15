@@ -131,7 +131,7 @@ namespace SDEMViewModels
 
             MulticastIPAddress = Constants.DEFAULT_MULTICAST_IP_ADDRESS;
             MulticastPort = Constants.DEFAULT_MULTICAST_PORT;
-            TCPServerPort = Constants.DEFAULT_TCP_SERVER_PORT;
+            TCPServerPort = Settings.Instance.TCPServerPort;
         }
     }
 }
