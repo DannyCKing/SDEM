@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Xml;
-using SDEMViewModels.Global;
+﻿using SDEMViewModels.Global;
 
 namespace SDEMViewModels.Messages
 {
@@ -23,28 +21,31 @@ namespace SDEMViewModels.Messages
         {
             DirectMessageContent msg = arguments as DirectMessageContent;
 
+            var senderId = msg.SenderId;
+            var messageId = msg.MessageId;
+            string encodedXml = System.Security.SecurityElement.Escape(msg.Message);
             var timeString = msg.MessageCreatedDate.ToLongDateString();
-            var xml = string.Format(DIRECT_MESSAGE, Constants.DIRECT_MESSAGE_HEADER, msg.SenderId, msg.MessageId, msg.Message, timeString, MessageHelper.GetExtraFluff());
+            var xml = string.Format(DIRECT_MESSAGE, Constants.DIRECT_MESSAGE_HEADER, senderId, messageId, encodedXml, timeString, MessageHelper.GetExtraFluff());
+            return xml;
 
-
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xml);
-            byte[] bytes = Encoding.UTF8.GetBytes(doc.OuterXml);
-            return Encoding.UTF8.GetString(bytes);
+            //XmlDocument doc = new XmlDocument();
+            //doc.LoadXml(xml);
+            //byte[] bytes = Encoding.UTF8.GetBytes(doc.OuterXml);
+            //return Encoding.UTF8.GetString(bytes);
         }
 
-        public byte[] CreateMessageBytes(IMessageContent arguments)
-        {
-            DirectMessageContent msg = arguments as DirectMessageContent;
+        //public byte[] CreateMessageBytes(IMessageContent arguments)
+        //{
+        //    DirectMessageContent msg = arguments as DirectMessageContent;
 
-            var timeString = msg.MessageCreatedDate.ToLongDateString();
-            var xml = string.Format(DIRECT_MESSAGE, Constants.DIRECT_MESSAGE_HEADER, msg.SenderId, msg.MessageId, msg.Message, timeString, MessageHelper.GetExtraFluff());
+        //    var timeString = msg.MessageCreatedDate.ToLongDateString();
+        //    var xml = string.Format(DIRECT_MESSAGE, Constants.DIRECT_MESSAGE_HEADER, msg.SenderId, msg.MessageId, msg.Message, timeString, MessageHelper.GetExtraFluff());
 
 
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xml);
-            byte[] bytes = Encoding.UTF8.GetBytes(doc.OuterXml);
-            return bytes;
-        }
+        //    XmlDocument doc = new XmlDocument();
+        //    doc.LoadXml(xml);
+        //    byte[] bytes = Encoding.UTF8.GetBytes(doc.OuterXml);
+        //    return bytes;
+        //}
     }
 }

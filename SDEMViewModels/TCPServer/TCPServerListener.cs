@@ -30,23 +30,6 @@ namespace SDEMViewModels.TCPServer
         {
             MainChatVM = chatViewModel;
             _PortNumber = portNumber;
-
-            //// Create an instance of the TcpListener class.
-            //Int32 port = _PortNumber;
-            //IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-
-            //_ServerSocket = new Socket(AddressFamily.InterNetwork,
-            //                             SocketType.Stream,
-            //                             ProtocolType.Tcp);
-
-            ////Assign the any IP of the machine and listen on port number 1000
-            //IPEndPoint ipEndPoint = new IPEndPoint(localAddr, _PortNumber);
-
-            ////Bind and listen on the given address
-            //_ServerSocket.Bind(ipEndPoint);
-            //_ServerSocket.Listen(100);
-
-            //_ServerSocket.BeginAccept(new AsyncCallback(OnAccept), null);
         }
 
         public void StartListener()
@@ -165,104 +148,10 @@ namespace SDEMViewModels.TCPServer
 
                 Console.WriteLine(message);
 
-                ////If the message is to login, logout, or simple text message
-                ////then when send to others the type of the message remains the same
-                //msgToSend.cmdCommand = msgReceived.cmdCommand;
-                //msgToSend.strName = msgReceived.strName;
-
-                //switch (msgReceived.cmdCommand)
-                //{
-                //    case Command.Login:
-
-                //        //When a user logs in to the server then we add her to our
-                //        //list of clients
-
-                //        ClientInfo clientInfo = new ClientInfo();
-                //        clientInfo.socket = clientSocket;
-                //        clientInfo.strName = msgReceived.strName;
-
-                //        clientList.Add(clientInfo);
-
-                //        //Set the text of the message that we will broadcast to all users
-                //        msgToSend.strMessage = "<<<" + msgReceived.strName + " has joined the room>>>";
-                //        break;
-
-                //    case Command.Logout:
-
-                //        //When a user wants to log out of the server then we search for her 
-                //        //in the list of clients and close the corresponding connection
-
-                //        int nIndex = 0;
-                //        foreach (ClientInfo client in clientList)
-                //        {
-                //            if (client.socket == clientSocket)
-                //            {
-                //                clientList.RemoveAt(nIndex);
-                //                break;
-                //            }
-                //            ++nIndex;
-                //        }
-
-                //        clientSocket.Close();
-
-                //        msgToSend.strMessage = "<<<" + msgReceived.strName + " has left the room>>>";
-                //        break;
-
-                //    case Command.Message:
-
-                //        //Set the text of the message that we will broadcast to all users
-                //        msgToSend.strMessage = msgReceived.strName + ": " + msgReceived.strMessage;
-                //        break;
-
-                //    case Command.List:
-
-                //        //Send the names of all users in the chat room to the new user
-                //        msgToSend.cmdCommand = Command.List;
-                //        msgToSend.strName = null;
-                //        msgToSend.strMessage = null;
-
-                //        //Collect the names of the user in the chat room
-                //        foreach (ClientInfo client in clientList)
-                //        {
-                //            //To keep things simple we use asterisk as the marker to separate the user names
-                //            msgToSend.strMessage += client.strName + "*";
-                //        }
-
-                //        message = msgToSend.ToByte();
-
-                //        //Send the name of the users in the chat room
-                //        clientSocket.BeginSend(message, 0, message.Length, SocketFlags.None,
-                //                new AsyncCallback(OnSend), clientSocket);
-                //        break;
-                //}
-
-                //if (msgToSend.cmdCommand != Command.List)   //List messages are not broadcasted
-                //{
-                //    message = msgToSend.ToByte();
-
-                //    foreach (ClientInfo clientInfo in clientList)
-                //    {
-                //        if (clientInfo.socket != clientSocket ||
-                //            msgToSend.cmdCommand != Command.Login)
-                //        {
-                //            //Send the message to all users
-                //            clientInfo.socket.BeginSend(message, 0, message.Length, SocketFlags.None,
-                //                new AsyncCallback(OnSend), clientInfo.socket);
-                //        }
-                //    }
-
-                //    txtLog.Text += msgToSend.strMessage + "\r\n";
-                //}
-
-                ////If the user is logging out then we need not listen from her
-                //if (msgReceived.cmdCommand != Command.Logout)
-                //{
-                //    //Start listening to the message send by the user
-                //    clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
-                //}
+                clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
             }
             catch (Exception ex)
-                {
+            {
                 Console.WriteLine("Error in OnRead in TCPServer");
                 Console.WriteLine(ex.Message);
                 //MessageBox.Show(ex.Message, "GSserverTCP", MessageBoxButtons.OK, MessageBoxIcon.Error);
