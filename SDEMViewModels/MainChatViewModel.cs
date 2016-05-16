@@ -39,6 +39,9 @@ namespace SDEMViewModels
                     _Conversations = new Dictionary<ChatUser, ConversationViewModel>();
                 }
 
+                if (_Conversations.Count == 1)
+                    CurrentConversation = _Conversations[ChatUsers[0]];
+
                 return _Conversations;
             }
             set

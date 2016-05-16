@@ -4,11 +4,35 @@ namespace SDEMViewModels
 {
     public class MessageViewModel : NotifyPropertyChanged
     {
+        private bool _IsPreviousMessageSameSender = false;
+
         private string _Sender;
 
         private DateTime _MessageDateStamp;
 
         private string _MessageContent;
+
+        #region IsPreviousMessageSameSender
+
+        public bool IsPreviousMessageSameSender
+        {
+            get
+            {
+                return _IsPreviousMessageSameSender;
+            }
+            set
+            {
+                if (value == _IsPreviousMessageSameSender)
+                    return;
+
+                _IsPreviousMessageSameSender = value;
+                RaisePropertyChanged("IsPreviousMessageSameSender");
+            }
+        }
+
+        #endregion
+
+        #region MessageDateStamp
 
         public DateTime MessageDateStamp
         {
@@ -26,6 +50,10 @@ namespace SDEMViewModels
             }
         }
 
+        #endregion
+
+        #region MessageContent
+
         public string MessageContent
         {
             get
@@ -41,6 +69,10 @@ namespace SDEMViewModels
                 RaisePropertyChanged("MessageContent");
             }
         }
+
+        #endregion
+
+        #region Sender
 
         public string Sender
         {
@@ -58,12 +90,15 @@ namespace SDEMViewModels
             }
         }
 
+        #endregion
 
-        public MessageViewModel(string sender, string content, DateTime timestamp)
+
+        public MessageViewModel(string sender, string content, DateTime timestamp, bool isPreviousMessageSameSender)
         {
             Sender = sender;
             MessageContent = content;
             MessageDateStamp = timestamp;
+            IsPreviousMessageSameSender = isPreviousMessageSameSender;
         }
     }
 }

@@ -98,12 +98,13 @@ namespace SDEMViewModels.TCPServer
         private void OnReceive(IAsyncResult ar)
         {
             Socket clientSocket = null;
+            string message = "";
             try
             {
                 clientSocket = (Socket)ar.AsyncState;
                 clientSocket.EndReceive(ar);
 
-                var message = XMLUtils.FormatXMLSecure(byteData);
+                message = XMLUtils.FormatXMLSecure(byteData);
                 var handler = MessageHandlerFactory.GetMessageHandler(message);
                 if (handler != null)
                     handler.HandleMessage(MainChatVM, message);
@@ -112,20 +113,24 @@ namespace SDEMViewModels.TCPServer
 
                 // clear out byteData
                 byteData = new byte[1024];
+                clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
 
             }
             catch (Exception ex)
             {
+                try
+                {
+                    clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
+                }
+                catch (SocketException se)
+                {
+                    // other user has left
+                }
                 Console.WriteLine("Error in OnRead in TCPServer");
+                Console.WriteLine(message);
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-
-
-                //MessageBox.Show(ex.Message, "GSserverTCP", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            if (clientSocket != null)
-                clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
         }
 
         private static void Send(Socket handler, String data)

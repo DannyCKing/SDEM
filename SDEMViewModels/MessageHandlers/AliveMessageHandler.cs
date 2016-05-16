@@ -34,7 +34,12 @@ namespace SDEMViewModels.MessageHandlers
                     var tcplistener = new TCPClientListener(msg.TCPServerAddress, msg.TCPPort);
                     fromUser = new ChatUser(msg.SenderId, msg.Username, tcplistener);
                     fromUser.TCPClient.StartClient();
-                    Application.Current.Dispatcher.Invoke(new Action(() => { mainChatViewModel.ChatUsers.Add(fromUser); }));
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        mainChatViewModel.ChatUsers.Add(fromUser);
+                        if (mainChatViewModel.ChatUsers.Count == 1)
+                            mainChatViewModel.SelectedChatUser = mainChatViewModel.ChatUsers[0];
+                    }));
                 }
 
                 fromUser.UserStatus = msg.CurrentStatus;
