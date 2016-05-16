@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using SDEMViewModels.Global;
-using SDEMViewModels.Messages;
 
 namespace SDEMViewModels.MessageHandlers
 {
@@ -25,7 +25,15 @@ namespace SDEMViewModels.MessageHandlers
 
         public bool IsMessageThisType(string message)
         {
-            XDocument doc = XDocument.Parse(message);
+            XDocument doc;
+            try
+            {
+                doc = XDocument.Parse(message);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
             var messageElement = doc.Root.Descendants().FirstOrDefault(x => x.Name == Constants.MESSAGE_TYPE_HEADER);
 
             if (messageElement.Value == MessageHeader)

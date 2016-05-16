@@ -75,7 +75,7 @@ namespace SDEMViewModels
         {
             var aliveMessageContent = new AliveMessageContent(TCPIPAddress, TCPPort, Settings.Instance.UserId, Settings.Instance.Username);
             var aliveMessageString = AliveMessageCreator.CreateMessage(aliveMessageContent);
-            var aliveMessage = Encoding.UTF8.GetBytes(aliveMessageString);
+            var aliveMessage = Encoding.ASCII.GetBytes(aliveMessageString);
             IPEndPoint mcastEndPoint = new IPEndPoint(IPAddress.Parse(MulticastIPAddress), MulticastPort);
 
             while (true)

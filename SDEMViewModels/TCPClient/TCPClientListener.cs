@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Crypt;
 
 namespace SDEMViewModels.TCPClient
 {
@@ -117,7 +118,7 @@ namespace SDEMViewModels.TCPClient
                 if (bytesRead > 0)
                 {
                     // There might be more data, so store the data received so far.
-                    state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
                     // Get the rest of the data.
                     client.BeginReceive(state.buffer, 0, ClientStateObject.BufferSize, 0,
@@ -140,8 +141,10 @@ namespace SDEMViewModels.TCPClient
 
         public void Send(String data)
         {
+            string encryptedText = new PasswordConverter().Encrypt(data);
+
             // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.UTF8.GetBytes(data);
+            byte[] byteData = Encoding.UTF8.GetBytes(encryptedText);
 
             // Begin sending the data to the remote device.
             _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,

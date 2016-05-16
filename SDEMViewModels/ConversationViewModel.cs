@@ -79,6 +79,7 @@ namespace SDEMViewModels
         }
 
         #endregion
+
         public ConversationViewModel(ChatUser user)
         {
             User = user;
@@ -99,6 +100,8 @@ namespace SDEMViewModels
             var xml = new DirectMessageCreator().CreateMessage(directMessage);
 
             User.TCPClient.Send(xml);
+
+            Messages.Add(new MessageViewModel(Settings.Instance.Username, directMessage.Message, DateTime.Now));
 
             // Clear out message after sending it
             CurrentMessage = "";
