@@ -41,5 +41,10 @@ namespace SDEMViews
         {
             this.DataContext = viewModel;
         }
+
+        private void ScrollViewer_ScrollChanged_1(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
+        {
+            MessagesScrollViewer.ScrollToEnd();
+        }
     }
 }

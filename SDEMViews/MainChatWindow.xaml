@@ -7,28 +7,32 @@
     <Window.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVis" />
         <converters:ReverseNullToVisibilityConverter x:Key="ReverseNullToVis" />
+        <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button"></Style>
     </Window.Resources>
     <Grid x:Name="mygrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Grid x:Name="ChatLeftPane" Grid.Column="0">
+        <Grid x:Name="ChatLeftPane" Grid.Column="0" Background="#4c5362">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="100" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Label Content="{Binding Username}" />
+                <Label Content="{Binding Username}" FontFamily="Future" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="Gray"/>
             </Grid>
-            <ScrollViewer Grid.Row="1">
-                <Grid >
-                    <ListBox  ItemsSource="{Binding ChatUsers}" SelectedItem="{Binding SelectedChatUser}">
+            <Label Grid.Row="1" Content="CONVERSATIONS" FontFamily="Future" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14" FontWeight="Bold" Foreground="LightGray"/>
+
+            <ScrollViewer Grid.Row="2" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="#4c5362">
+                <Grid Background="#4c5362">
+                    <ListBox  ItemsSource="{Binding ChatUsers}" SelectedItem="{Binding SelectedChatUser}" Background="#4c5362">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Username}" />
+                                <StackPanel Orientation="Horizontal" Background="#4c5362">
+                                    <Label Content="{Binding Username}" FontFamily="Futura" FontSize="14" Foreground="LightGray"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -37,8 +41,8 @@
             </ScrollViewer>
             <Grid Grid.Row="3">
                 <StackPanel Orientation="Vertical">
-                    <Label Content="{Binding TCPServerAddress}" />
-                    <Label Content="{Binding TCPServerPort}" />
+                    <Label Content="{Binding TCPServerAddress}" FontFamily="Fututra" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="Gray"/>
+                    <Label Content="{Binding TCPServerPort}" FontFamily="Futura" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="Gray"/>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -47,7 +51,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0">
+            <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="0" ScrollChanged="ScrollViewer_ScrollChanged_1">
                     <ListBox ItemsSource="{Binding Messages}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -57,13 +61,13 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                    <Label Content="{Binding Sender}" FontFamily="Verdana" FontSize="12" FontWeight="Bold" Foreground="Black"
+                                    <Label Content="{Binding Sender}" FontFamily="Futura" FontSize="12" FontWeight="Bold" Foreground="Black"
                                            Margin="0" Padding="0"/>
-                                    <Label Content="{Binding MessageDateStamp,StringFormat=t}" FontFamily="Verdana" FontSize="12" FontWeight="Bold" Foreground="LightGray"
+                                    <Label Content="{Binding MessageDateStamp,StringFormat=t}" FontFamily="Futura" FontSize="12" FontWeight="Bold" Foreground="LightGray"
                                            Margin="5 0 0 0" Padding="0"/>
                                 </StackPanel>
                                 <TextBlock Grid.Row="1" Text="{Binding MessageContent,Mode=TwoWay}" TextWrapping="Wrap"
-                                            FontFamily="Verdana" FontSize="14" FontWeight="Normal" 
+                                            FontFamily="Futura" FontSize="14" FontWeight="Normal" 
                                            Margin="0"/>
                             </Grid>
                             </DataTemplate>
@@ -77,12 +81,12 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="MessageText" Grid.Column="0" 
                          Text="{Binding CurrentMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         FontFamily="Verdana" FontSize="16">
+                         FontFamily="Futura" FontSize="16">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter" />
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Grid.Column="1" Content="Send" Command="{Binding SendMessageCommand}"/>
+                <Button Grid.Column="1" Content="SEND" Command="{Binding SendMessageCommand}" Background="#627192" FontFamily="Futura"/>
             </Grid>
         </Grid>
     </Grid>
