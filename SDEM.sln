@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDEMViewModels", "SDEMViewModels\SDEMViewModels.csproj", "{211C22E3-2067-4216-90F1-1FDFE3D04EA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDEMViews", "SDEMViews\SDEMViews.csproj", "{B3CB06C6-FC92-48A8-ABB2-567BA9B869D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDEMEncyption", "SDEMEncryption\SDEMEncyption.csproj", "{D15D34F2-C970-41E1-9716-73C5575D0C4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDEMNotifications", "SDEMNotifications\SDEMNotifications.csproj", "{62B2330E-EBDB-4264-9F94-060640B36730}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +27,10 @@ Global
 		{D15D34F2-C970-41E1-9716-73C5575D0C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D15D34F2-C970-41E1-9716-73C5575D0C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D15D34F2-C970-41E1-9716-73C5575D0C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B2330E-EBDB-4264-9F94-060640B36730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B2330E-EBDB-4264-9F94-060640B36730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B2330E-EBDB-4264-9F94-060640B36730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B2330E-EBDB-4264-9F94-060640B36730}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

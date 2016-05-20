@@ -39,16 +39,20 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Windows" />
     <Reference Include="Windows.UI" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatConversationViewModel.cs" />
     <Compile Include="Discoverer.cs" />
+    <Compile Include="Global\DispatcherService.cs" />
     <Compile Include="Global\SettingSaver.cs" />
     <Compile Include="Global\Settings.cs" />
     <Compile Include="MainChatViewModel.cs" />
@@ -91,6 +95,10 @@
     <ProjectReference Include="..\SDEMEncryption\SDEMEncyption.csproj">
       <Project>{d15d34f2-c970-41e1-9716-73c5575d0c4d}</Project>
       <Name>SDEMEncyption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SDEMNotifications\SDEMNotifications.csproj">
+      <Project>{62b2330e-ebdb-4264-9f94-060640b36730}</Project>
+      <Name>SDEMNotifications</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
