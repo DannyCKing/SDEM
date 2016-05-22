@@ -53,7 +53,6 @@
     <Compile Include="ChatConversationViewModel.cs" />
     <Compile Include="Discoverer.cs" />
     <Compile Include="Global\DispatcherService.cs" />
-    <Compile Include="Global\Notifications.cs" />
     <Compile Include="Global\SettingSaver.cs" />
     <Compile Include="Global\Settings.cs" />
     <Compile Include="MainChatViewModel.cs" />

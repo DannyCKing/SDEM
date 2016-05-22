@@ -17,6 +17,19 @@ namespace SDEMViewModels.Global
             return messageAsString;
         }
 
+        public static string FormatXML(byte[] message, PasswordConverter converter)
+        {
+            var encoding = new ASCIIEncoding();
+            var encryptedMessage = encoding.GetString(message);
+            var messageAsString = converter.Decrypt(encryptedMessage);
+
+            // messageAsString = new PasswordConverter().Decrypt(messageAsString);
+
+            messageAsString = messageAsString.Replace("\r\n", string.Empty);
+            messageAsString = messageAsString.Replace("\0", string.Empty);
+            return messageAsString;
+        }
+
         public static string FormatXMLSecure(byte[] message)
         {
             var encoding = new UTF8Encoding(false);

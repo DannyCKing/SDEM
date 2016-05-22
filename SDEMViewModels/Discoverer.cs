@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.Caching; // add this library from the reference tab
 using System.Text;
 using System.Threading.Tasks;
+using Crypt;
 using SDEMViewModels.Global;
 using SDEMViewModels.MessageHandlers;
 using SDEMViewModels.Messages;
@@ -25,6 +26,8 @@ namespace SDEMViewModels
         private static int TCPPort;
 
         private static Guid MyIdentifier;
+
+        private static PasswordConverter Coder = new PasswordConverter();
 
         static UdpClient _UdpClient;
         static MemoryCache _Peers = new MemoryCache("_PEERS_");
@@ -75,7 +78,8 @@ namespace SDEMViewModels
         {
             var aliveMessageContent = new AliveMessageContent(TCPIPAddress, TCPPort, Settings.Instance.UserId, Settings.Instance.Username);
             var aliveMessageString = AliveMessageCreator.CreateMessage(aliveMessageContent);
-            var aliveMessage = Encoding.ASCII.GetBytes(aliveMessageString);
+            var encryptedString = Coder.Encrypt(aliveMessageString);
+            var aliveMessage = Encoding.ASCII.GetBytes(encryptedString);
             IPEndPoint mcastEndPoint = new IPEndPoint(IPAddress.Parse(MulticastIPAddress), MulticastPort);
 
             while (true)
@@ -91,7 +95,7 @@ namespace SDEMViewModels
             while (true)
             {
                 var message = _UdpClient.Receive(ref from);
-                var messageAsString = XMLUtils.FormatXML(message);
+                var messageAsString = XMLUtils.FormatXML(message, Coder);
                 if (MessageRecieved != null)
                 {
                     MessageRecieved(messageAsString);

@@ -52,6 +52,7 @@ namespace SDEMViewModels.Global
             while (count < 5 && !success)
             {
                 success = SaveSettingsWork(settings);
+                count++;
             }
         }
 
@@ -82,7 +83,7 @@ namespace SDEMViewModels.Global
             }
         }
 
-        public static void GetSettingsFromFile(Settings settings)
+        public static bool GetSettingsFromFile(Settings settings)
         {
             // Try 5 times to save file
             bool success = false;
@@ -91,7 +92,10 @@ namespace SDEMViewModels.Global
             while (count < 5 && !success)
             {
                 success = GetSettingsFromFileDoWork(settings);
+                count++;
             }
+
+            return success;
         }
 
         private static bool GetSettingsFromFileDoWork(Settings settings)

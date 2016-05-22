@@ -78,7 +78,7 @@ namespace SDEMViewModels.Global
                     return;
 
                 _Username = value;
-                SaveSettings(this);
+                SaveSettings();
             }
         }
 
@@ -99,7 +99,7 @@ namespace SDEMViewModels.Global
                     return;
 
                 _UserId = value;
-                SaveSettings(this);
+                SaveSettings();
             }
         }
 
@@ -113,7 +113,7 @@ namespace SDEMViewModels.Global
             this.LengthOfHistory = 100;
         }
 
-        public void SaveSettings(Settings settings)
+        public void SaveSettings()
         {
             SettingSaver.SaveSettingsToFile(this);
         }
@@ -124,10 +124,13 @@ namespace SDEMViewModels.Global
             if (!SettingSaver.DoesSettingsFileExist())
             {
                 InitializeSettings();
-                SaveSettings(this);
+                SaveSettings();
             }
 
-            SettingSaver.GetSettingsFromFile(this);
+            if (!SettingSaver.GetSettingsFromFile(this))
+            {
+                SaveSettings();
+            }
         }
 
 
