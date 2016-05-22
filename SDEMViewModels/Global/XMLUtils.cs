@@ -1,5 +1,6 @@
 ﻿
 using System.Text;
+using System.Xml.Linq;
 using Crypt;
 namespace SDEMViewModels.Global
 {
@@ -26,6 +27,11 @@ namespace SDEMViewModels.Global
             messageAsString = messageAsString.Replace("\r\n", string.Empty);
             messageAsString = messageAsString.Replace("\0", string.Empty);
             return messageAsString;
+        }
+
+        public static string XmlToString(XDocument xmlDoc)
+        {
+            return xmlDoc.ToString();
         }
     }
 }

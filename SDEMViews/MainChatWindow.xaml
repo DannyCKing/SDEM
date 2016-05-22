@@ -8,6 +8,9 @@
         <converters:NullToVisibilityConverter x:Key="NullToVis" />
         <converters:ReverseNullToVisibilityConverter x:Key="ReverseNullToVis" />
         <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button"></Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
     </Window.Resources>
     <Grid x:Name="mygrid">
         <Grid.ColumnDefinitions>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 
 namespace SDEMViewModels.Global
 {
@@ -43,6 +42,13 @@ namespace SDEMViewModels.Global
             }
         }
 
+        public bool DesktopNotifications { get; set; }
+
+        public int LengthOfHistory { get; set; }
+
+        public bool RequireHover { get; set; }
+
+        public bool Sounds { get; set; }
 
         public int TCPServerPort
         {
@@ -97,45 +103,34 @@ namespace SDEMViewModels.Global
             }
         }
 
+        private void InitializeSettings()
+        {
+            Username = "No name";
+            UserId = Guid.NewGuid();
+            this.DesktopNotifications = true;
+            this.Sounds = true;
+            this.RequireHover = false;
+            this.LengthOfHistory = 100;
+        }
+
         public void SaveSettings(Settings settings)
         {
-            if (string.IsNullOrWhiteSpace(settings.Username))
-                settings.Username = "No name";
-
-            if (settings.UserId == Guid.Empty)
-                settings.UserId = Guid.NewGuid();
-
-            XDocument document = new XDocument(
-                                    new XElement("Settings",
-                                        new XElement("Username", settings.Username.ToString()),
-                                        new XElement("UserId", settings.UserId.ToString())));
-
-            document.Save(FilePathAndFileName);
+            SettingSaver.SaveSettingsToFile(this);
         }
 
 
         public void ParseSavedSettings()
         {
-            if (!System.IO.File.Exists(FilePathAndFileName))
+            if (!SettingSaver.DoesSettingsFileExist())
             {
+                InitializeSettings();
                 SaveSettings(this);
             }
-            var document = XDocument.Load(FilePathAndFileName);
-            var settingsElement = document.Element("Settings");
-            Username = settingsElement.Element("Username").Value;
-            UserId = Guid.Parse(settingsElement.Element("UserId").Value);
+
+            SettingSaver.GetSettingsFromFile(this);
         }
 
-        private string FilePathAndFileName
-        {
-            get
-            {
-                string fileNameAndExtension = Constants.SETTINGS_FILE_NAME + ".set";
 
-                var pathAndFile = Constants.APP_DATA_LOCATION + System.IO.Path.DirectorySeparatorChar + fileNameAndExtension;
-                return pathAndFile;
-            }
-        }
 
     }
 

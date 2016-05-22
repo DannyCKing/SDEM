@@ -29,9 +29,19 @@ namespace SDEMViews
                 var startup = this.DataContext as StartUpViewModel;
                 startup.ShowDeveloperOptions = true;
             }
+
+            this.UsernameTextBox.Focus();
+            this.UsernameTextBox.SelectionStart = this.UsernameTextBox.Text.Length; // add some logic if length is 0
+            this.UsernameTextBox.SelectionLength = 0;
         }
 
         private void Button_PreviewMouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            Login();
+
+        }
+
+        private void Login()
         {
             var startup = this.DataContext as StartUpViewModel;
 
@@ -59,5 +69,14 @@ namespace SDEMViews
             newWindow.Show();
             this.Close();
         }
+
+        private void Window_PreviewKeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Login();
+            }
+        }
+
     }
 }

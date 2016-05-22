@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:con="clr-namespace:SDEMViews.Converters"
         xmlns:vm="clr-namespace:SDEMViewModels;assembly=SDEMViewModels"
-        Title="SDEM" Height="350" Width="525">
+        Title="SDEM" Height="300" Width="525"  PreviewKeyDown="Window_PreviewKeyDown_1"
+        Background="#4c5362">
     <Window.DataContext>
         <vm:StartUpViewModel />
     </Window.DataContext>
@@ -11,19 +12,13 @@
         <Style TargetType="CheckBox">
             <Setter Property="Margin" Value="20" />
         </Style>
-
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="20 5 5 5" />
-        </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="5" />
-        </Style>
         <con:InverseBooleanConverter x:Key="InverseBool" />
         <con:BoolToVisibility x:Key="BoolToVis" />
-
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="0 50 0 50" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,8 +31,10 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <Label  Grid.Column="0" Content="Username" />
-                    <TextBox x:Name="UsernameTextBox" Grid.Column="1" Text="{Binding Username,Mode=TwoWay}"/>
+                    <Label  Grid.Column="0" Content="Username" FontSize="18" HorizontalAlignment="Right"
+                            Foreground="White" FontWeight="Bold"/>
+                    <TextBox x:Name="UsernameTextBox" Grid.Column="1" Text="{Binding Username,Mode=TwoWay}"
+                             BorderThickness="0"  FontSize="18" Margin="20 0 20 10"/>
                 </Grid>
 
                 <StackPanel x:Name="DeveloperOptions"
@@ -71,6 +68,7 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Button Grid.Row="2" Margin="20" VerticalAlignment="Bottom" Content="Open" PreviewMouseDown="Button_PreviewMouseDown_1" />
+        <Button Name="LoginButton" Grid.Row="2" Margin="100 20 100 20" VerticalAlignment="Bottom" Content="Open" 
+                PreviewMouseDown="Button_PreviewMouseDown_1"  FontSize="18"/>
     </Grid>
 </Window>
