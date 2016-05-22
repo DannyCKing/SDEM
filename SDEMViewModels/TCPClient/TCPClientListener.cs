@@ -9,7 +9,7 @@ namespace SDEMViewModels.TCPClient
 {
     public class TCPClientListener
     {
-        private byte[] byteData = new byte[1024];
+        private byte[] byteData = new byte[2048];
 
         private Socket _ClientSocket { get; set; }
 
@@ -53,7 +53,7 @@ namespace SDEMViewModels.TCPClient
 
                 //_ClientSocket.BeginSend(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
 
-                byteData = new byte[1024];
+                byteData = new byte[2048];
                 //Start listening to the data asynchronously
                 _ClientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), null);
             }
@@ -144,7 +144,7 @@ namespace SDEMViewModels.TCPClient
             string encryptedText = new PasswordConverter().Encrypt(data);
 
             // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.UTF8.GetBytes(encryptedText);
+            byte[] byteData = Encoding.ASCII.GetBytes(encryptedText);
 
             // Begin sending the data to the remote device.
             _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
@@ -154,9 +154,18 @@ namespace SDEMViewModels.TCPClient
 
         public void Send(string[] data)
         {
+            int count = 0;
             foreach (var message in data)
             {
                 string encryptedText = new PasswordConverter().Encrypt(message);
+
+                Console.WriteLine(string.Format("Sending Message {0} of {1}", count, data.Length));
+
+                Console.WriteLine("Message length: " + encryptedText.Length);
+
+                Console.WriteLine("Message: ");
+                Console.WriteLine(encryptedText);
+                Console.WriteLine();
 
                 // Convert the string data to byte data using ASCII encoding.
                 byte[] byteData = Encoding.ASCII.GetBytes(encryptedText);
@@ -164,6 +173,7 @@ namespace SDEMViewModels.TCPClient
                 // Begin sending the data to the remote device.
                 _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
                     new AsyncCallback(SendCallback), _ClientSocket);
+                count++;
             }
         }
 

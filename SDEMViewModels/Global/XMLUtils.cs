@@ -8,7 +8,7 @@ namespace SDEMViewModels.Global
     {
         public static string FormatXML(byte[] message)
         {
-            var encoding = new UTF8Encoding(false);
+            var encoding = new ASCIIEncoding();
             var messageAsString = encoding.GetString(message);
             // messageAsString = new PasswordConverter().Decrypt(messageAsString);
 

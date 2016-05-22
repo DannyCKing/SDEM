@@ -7,7 +7,7 @@ namespace SDEMViewModels.Messages
     {
         private static Random _Random = new Random(new Random().Next());
 
-        private const string _CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        private const string _CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890+=";
 
         static MessageHelper()
         {

@@ -109,7 +109,6 @@ namespace SDEMViewModels.TCPServer
                 if (handler != null)
                     handler.HandleMessage(MainChatVM, message);
 
-                Console.WriteLine(message);
 
                 // clear out byteData
                 byteData = new byte[2048];

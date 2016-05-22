@@ -54,16 +54,18 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="0" ScrollChanged="ScrollViewer_ScrollChanged_1">
-                    <ListBox ItemsSource="{Binding Messages}" >
+            <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="0" ScrollChanged="ScrollViewer_ScrollChanged_1" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          VerticalScrollBarVisibility="Auto">
+                    <ListBox ItemsSource="{Binding Messages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                            <Grid Margin="0 4 0 0">
+                            <Grid Margin="0 4 0 0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="15" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                                     <Label Content="{Binding Sender}" FontFamily="Futura" FontSize="12" FontWeight="Bold" Foreground="Black"
                                            Margin="0" Padding="0"/>
                                     <Label Content="{Binding MessageDateStamp,StringFormat=t}" FontFamily="Futura" FontSize="12" FontWeight="Bold" Foreground="LightGray"
@@ -83,8 +85,8 @@
                     <ColumnDefinition Width="50" />
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="MessageText" Grid.Column="0" 
-                         Text="{Binding CurrentMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         FontFamily="Futura" FontSize="16">
+                         Text="{Binding CurrentMessage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
+                         FontFamily="Futura" FontSize="16" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <TextBox.InputBindings>
                         <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter" />
                     </TextBox.InputBindings>

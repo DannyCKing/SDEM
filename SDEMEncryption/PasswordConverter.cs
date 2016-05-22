@@ -53,7 +53,16 @@ namespace Crypt
 
         public string Decrypt(string encrypted)
         {
-            byte[] encryptedBytes = Convert.FromBase64String(encrypted);
+            byte[] encryptedBytes = null;
+            try
+            {
+                encryptedBytes = Convert.FromBase64String(encrypted);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(encrypted + " is not valid base 64");
+                return null;
+            }
 
             using (var rij = new RijndaelManaged())
             {
