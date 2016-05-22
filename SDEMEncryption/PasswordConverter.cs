@@ -24,6 +24,7 @@ namespace Crypt
             {
                 using (var rij = new RijndaelManaged())
                 {
+                    rij.Padding = PaddingMode.PKCS7;
                     try
                     {
                         rij.Key = KeyByteArray;
@@ -56,6 +57,7 @@ namespace Crypt
 
             using (var rij = new RijndaelManaged())
             {
+                rij.Padding = PaddingMode.PKCS7;
                 try
                 {
                     rij.Key = KeyByteArray;

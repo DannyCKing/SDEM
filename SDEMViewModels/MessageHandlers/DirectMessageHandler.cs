@@ -19,20 +19,29 @@ namespace SDEMViewModels.MessageHandlers
         {
             DirectMessageContent msg = MessageParser.ParseMessage(message) as DirectMessageContent;
 
+            MessageQueue.Instance.AddMessage(msg, mainChatViewModel);
+            //HandleMessage(mainChatViewModel, msg);
+        }
+
+        public void HandleMessage(MainChatViewModel mainChatViewModel, DirectMessageContent directMessage)
+        {
             //find conversation
-            var chatUser = mainChatViewModel.ChatUsers.FirstOrDefault(x => x.UserId == msg.SenderId);
+            var chatUser = mainChatViewModel.ChatUsers.FirstOrDefault(x => x.UserId == directMessage.SenderId);
             var conversation = mainChatViewModel.Conversations[chatUser];
             var sameSender = conversation.Messages.Last().Sender == chatUser.Username;
             DispatchService.Invoke(new Action(() =>
             {
-                conversation.Messages.Add(new MessageViewModel(chatUser.Username, msg.Message, msg.MessageCreatedDate, sameSender));
+                conversation.Messages.Add(new MessageViewModel(chatUser.Username, directMessage.Message, directMessage.MessageCreatedDate, sameSender));
             }));
 
-            ShowToast(chatUser.Username, msg.Message);
+            ShowToast(chatUser.Username, directMessage.Message);
         }
 
         private void ShowToast(string sender, string message)
         {
+            if (Settings.Instance.DesktopNotifications == false)
+                return;
+
             // Get a toast XML template
             Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 

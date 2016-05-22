@@ -98,10 +98,10 @@ namespace SDEMViewModels
         private void SendMessage(object param = null)
         {
             var directMessage = new DirectMessageContent(Settings.Instance.UserId, CurrentMessage);
-            var xml = new DirectMessageCreator().CreateMessage(directMessage);
+            var xmlStrings = new DirectMessageCreator().CreateMessage(directMessage);
 
             var sameAsPrevious = Messages.Last().Sender == Settings.Instance.Username;
-            User.TCPClient.Send(xml);
+            User.TCPClient.Send(xmlStrings);
 
             Messages.Add(new MessageViewModel(Settings.Instance.Username, directMessage.Message, DateTime.Now, sameAsPrevious));
 

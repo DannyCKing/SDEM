@@ -32,7 +32,7 @@ namespace SDEMViewModels.Global
 
         public static string FormatXMLSecure(byte[] message)
         {
-            var encoding = new UTF8Encoding(false);
+            var encoding = new ASCIIEncoding();
             var messageAsString = encoding.GetString(message);
             messageAsString = messageAsString.Replace("\0", string.Empty);
             messageAsString = new PasswordConverter().Decrypt(messageAsString);

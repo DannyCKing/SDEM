@@ -18,7 +18,7 @@ namespace SDEMViewModels.TCPServer
 
         private Socket _ServerSocket;
 
-        byte[] byteData = new byte[1024];
+        byte[] byteData = new byte[2048];
 
         List<ClientInfo> Clients = new List<ClientInfo>();
 
@@ -35,7 +35,7 @@ namespace SDEMViewModels.TCPServer
         public void StartListener()
         {
             // Data buffer for incoming data.
-            byteData = new Byte[1024];
+            byteData = new Byte[2048];
 
             // Establish the local endpoint for the socket.
             // The DNS name of the computer
@@ -112,7 +112,7 @@ namespace SDEMViewModels.TCPServer
                 Console.WriteLine(message);
 
                 // clear out byteData
-                byteData = new byte[1024];
+                byteData = new byte[2048];
                 clientSocket.BeginReceive(byteData, 0, byteData.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
 
             }

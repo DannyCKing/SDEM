@@ -15,6 +15,10 @@ namespace SDEMViewModels.Messages
 
         public string Message { get; set; }
 
+        public int MessageNumber { get; set; }
+
+        public int TotalMessages { get; set; }
+
         public DirectMessageContent(Guid senderId, string message)
         {
             SenderId = senderId;
@@ -23,12 +27,14 @@ namespace SDEMViewModels.Messages
             MessageCreatedDate = DateTime.Now;
         }
 
-        public DirectMessageContent(Guid senderId, string message, Guid messageId, DateTime createdDate)
+        public DirectMessageContent(Guid senderId, string message, Guid messageId, DateTime createdDate, int part, int total)
         {
             SenderId = senderId;
             Message = message;
             MessageId = messageId;
             MessageCreatedDate = createdDate;
+            MessageNumber = part;
+            TotalMessages = total;
         }
     }
 }

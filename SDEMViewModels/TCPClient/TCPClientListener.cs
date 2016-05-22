@@ -151,14 +151,22 @@ namespace SDEMViewModels.TCPClient
                 new AsyncCallback(SendCallback), _ClientSocket);
         }
 
-        public void Send(byte[] data)
-        {
-            byte[] byteData = data;
 
-            // Begin sending the data to the remote device.
-            _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), _ClientSocket);
+        public void Send(string[] data)
+        {
+            foreach (var message in data)
+            {
+                string encryptedText = new PasswordConverter().Encrypt(message);
+
+                // Convert the string data to byte data using ASCII encoding.
+                byte[] byteData = Encoding.ASCII.GetBytes(encryptedText);
+
+                // Begin sending the data to the remote device.
+                _ClientSocket.BeginSend(byteData, 0, byteData.Length, 0,
+                    new AsyncCallback(SendCallback), _ClientSocket);
+            }
         }
+
 
         private void SendCallback(IAsyncResult ar)
         {
