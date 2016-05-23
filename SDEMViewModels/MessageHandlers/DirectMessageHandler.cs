@@ -34,13 +34,15 @@ namespace SDEMViewModels.MessageHandlers
                 conversation.Messages.Add(new MessageViewModel(chatUser.Username, directMessage.Message, directMessage.MessageCreatedDate, sameSender));
             }));
 
-            ShowToast(chatUser.Username, directMessage.Message);
+            //ShowToast(chatUser.Username, directMessage.Message);
+            ShowToast("SDEM", chatUser.Username + " sent you a message");
+
         }
 
         private void ShowToast(string sender, string message)
         {
-            if (Settings.Instance.DesktopNotifications == false)
-                return;
+            //if (Settings.Instance.DesktopNotifications == false)
+            //    return;
 
             // Get a toast XML template
             Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
