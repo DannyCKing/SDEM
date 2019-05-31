@@ -27,7 +27,11 @@
             <Grid Grid.Row="0">
                 <Label Content="{Binding Username}" FontFamily="Future" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="Gray"/>
             </Grid>
-            <Label Grid.Row="1" Content="CONVERSATIONS" FontFamily="Future" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14" FontWeight="Bold" Foreground="LightGray"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" >
+                <Label Content="CONVERSATIONS" FontFamily="Future" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="14" FontWeight="Bold" Foreground="LightGray"/>
+                <Button Content="Add" FontFamily="Future" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Foreground="LightGray" Click="Button_Click"/>
+            </StackPanel>
+            
 
             <ScrollViewer Grid.Row="2" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="#4c5362">
                 <Grid Background="#4c5362">

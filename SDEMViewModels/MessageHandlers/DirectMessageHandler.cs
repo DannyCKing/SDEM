@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
+using System.Xml;
 using SDEMNotifications;
 using SDEMViewModels.Global;
 using SDEMViewModels.Messages;
@@ -27,6 +29,17 @@ namespace SDEMViewModels.MessageHandlers
         {
             //find conversation
             var chatUser = mainChatViewModel.ChatUsers.FirstOrDefault(x => x.UserId == directMessage.SenderId);
+            //if(chatUser == null)
+            //{
+            //    // add user to lsit
+            //    Application.Current.Dispatcher.Invoke(new Action(() =>
+            //    {
+            //        mainChatViewModel.ChatUsers.Add(chatUser);
+            //        if (mainChatViewModel.ChatUsers.Count == 1)
+            //            mainChatViewModel.SelectedChatUser = mainChatViewModel.ChatUsers[0];
+            //    }));
+            //}
+
             var conversation = mainChatViewModel.Conversations[chatUser];
             var sameSender = conversation.Messages.Last().Sender == chatUser.Username;
             DispatchService.Invoke(new Action(() =>
@@ -45,19 +58,19 @@ namespace SDEMViewModels.MessageHandlers
             //    return;
 
             // Get a toast XML template
-            Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
+            //XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
 
             var xml = DirectMessageNotification.GetDirectNotificationXml(sender, message);
             // Specify the absolute path to an image
             //String imagePath = "file:///" + Path.GetFullPath("toastImageAndText.png");
             //XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
 
-            var xmlDocument = new Windows.Data.Xml.Dom.XmlDocument();
+            var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
-            ToastNotification toast = new ToastNotification(xmlDocument);
+            //ToastNotification toast = new ToastNotification(xmlDocument);
             //toast.ExpirationTime = DateTimeOffset.Now;
 
-            ToastNotificationManager.CreateToastNotifier("SDEM").Show(toast);
+            //ToastNotificationManager.CreateToastNotifier("SDEM").Show(toast);
         }
     }
 }

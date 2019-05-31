@@ -16,6 +16,8 @@ namespace SDEMViewModels.Global
 
         private const int DEFAULT_TCP_SERVER_PORT = 43431;
 
+        private const int DEFAULT_TCP_FINDER_SERVER_PORT = 26471;
+
         private Settings()
         {
             if (!IsInitialized)
@@ -61,6 +63,17 @@ namespace SDEMViewModels.Global
             }
         }
 
+        public int FinderTCPServerPort
+        {
+            get
+            {
+                if (IsTestAccount)
+                    return DEFAULT_TCP_FINDER_SERVER_PORT + 100;
+                else
+                    return DEFAULT_TCP_FINDER_SERVER_PORT;
+            }
+        }
+
         private string _Username;
 
         public string Username
@@ -89,9 +102,16 @@ namespace SDEMViewModels.Global
             get
             {
                 if (IsTestAccount)
+                {
+                    Logger.Log("Using Test Guid " + TEST_GUID);
                     return TEST_GUID;
+                }
                 else
+                {
+                    Logger.Log("Using Real Guid " + _UserId);
+                    Logger.Log("Using Real Guid " + _UserId);
                     return _UserId;
+                }
             }
             set
             {

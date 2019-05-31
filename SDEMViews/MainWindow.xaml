@@ -25,22 +25,22 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Vertical">
-                
+
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <Label  Grid.Column="0" Content="Username" FontSize="18" HorizontalAlignment="Right"
-                            Foreground="White" FontWeight="Bold"/>
-                    <TextBox x:Name="UsernameTextBox" Grid.Column="1" Text="{Binding Username,Mode=TwoWay}"
+                            Foreground="White" FontWeight="Bold" Grid.ColumnSpan="2" Margin="0,-1,373,1"/>
+                    <TextBox x:Name="UsernameTextBox" Grid.Column="1" Text="{Binding Username}"
                              BorderThickness="0"  FontSize="18" Margin="20 0 20 10"/>
                 </Grid>
 
                 <StackPanel x:Name="DeveloperOptions"
                             Visibility="{Binding ShowDeveloperOptions,Converter={StaticResource BoolToVis}}">
-                <CheckBox Content="Use Defaults" IsChecked="{Binding UseDefaults}"/>
-                    <CheckBox Content="Second WIndows" IsChecked="{Binding TestAccount}"/>
+                    <CheckBox Content="Use Defaults" IsChecked="{Binding UseDefaults}"/>
+                    <CheckBox Content="Second Windows" IsChecked="{Binding TestAccount}"/>
                     <Grid IsEnabled="{Binding UseDefaults,Converter={StaticResource InverseBool}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -68,7 +68,7 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <Button Name="LoginButton" Grid.Row="2" Margin="100 20 100 20" VerticalAlignment="Bottom" Content="Open" 
+        <Button Name="LoginButton" Grid.Row="1" Margin="101,0,99,-115" VerticalAlignment="Bottom" Content="Open" 
                 PreviewMouseDown="Button_PreviewMouseDown_1"  FontSize="18"/>
     </Grid>
 </Window>

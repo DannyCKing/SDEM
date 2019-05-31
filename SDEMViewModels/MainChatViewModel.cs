@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using Crypt;
 using SDEMViewModels.Global;
 using SDEMViewModels.MessageHandlers;
+using SDEMViewModels.Messages;
 using SDEMViewModels.Models;
+using SDEMViewModels.TCPClient;
 using SDEMViewModels.TCPServer;
 
 namespace SDEMViewModels
 {
     public class MainChatViewModel : NotifyPropertyChanged
     {
+        private ConnectionClient CurrentConnectionClient;
+        public ConnectionServer ConnectionServer;
+
         private Dictionary<ChatUser, ConversationViewModel> _Conversations;
         private ObservableCollection<ChatUser> _ChatUsers;
         private ConversationViewModel _CurrentConversation;
@@ -249,7 +256,10 @@ namespace SDEMViewModels
             _TCPServer = new TCPServerListener(this, tcpPort);
             _SocketThread = new Thread(_TCPServer.StartListener);
             _SocketThread.Start();
-            Discoverer.Start(MulticastIPAddress, MulticastPort, MyIdentifier, TCPServerAddress, TCPServerPort);
+            //Discoverer.Start(MulticastIPAddress, MulticastPort, MyIdentifier, TCPServerAddress, TCPServerPort);
+
+            Logger.Log("Starting server with guid " + MyIdentifier);
+            ConnectionServer = new ConnectionServer(GetPublicIP(), Settings.Instance.FinderTCPServerPort, MyIdentifier, Settings.Instance.Username, this);
         }
 
         public void MessageRecieved(string message)
@@ -273,6 +283,21 @@ namespace SDEMViewModels
                 localIP = endPoint.Address.ToString();
             }
             return localIP;
+        }
+
+        public void ConnectToServer(string ipAddress, int port)
+        {
+            var messageCreator = new AliveMessageCreator();
+            var myIPAddress = GetPublicIP();
+            var myPort = Settings.Instance.TCPServerPort;
+            var myId = Settings.Instance.UserId;
+            var myUsername = Settings.Instance.Username;
+            var messageContent = new AliveMessageContent(myIPAddress, myPort, myId, myUsername);
+            var message = messageCreator.CreateMessage(messageContent);
+            var encryptedString = new PasswordConverter().Encrypt(message);
+            var aliveMessage = Encoding.ASCII.GetBytes(encryptedString);
+            CurrentConnectionClient = new ConnectionClient(ipAddress, port, this, aliveMessage);
+
         }
     }
 }

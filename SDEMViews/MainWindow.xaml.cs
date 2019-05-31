@@ -28,6 +28,7 @@ namespace SDEMViews
             {
                 var startup = this.DataContext as StartUpViewModel;
                 startup.ShowDeveloperOptions = true;
+                startup.UseDefaults = false;
             }
 
             this.UsernameTextBox.Focus();
@@ -49,21 +50,24 @@ namespace SDEMViews
             startup.Username = username;
             Settings.Instance.Username = startup.Username;
 
-
+            var tcpPort = 0;
             string ipAddress = "";
             int multicastPort = 0;
             if (startup.UseDefaults)
             {
                 ipAddress = Constants.DEFAULT_MULTICAST_IP_ADDRESS;
                 multicastPort = Constants.DEFAULT_MULTICAST_PORT;
+                tcpPort = Settings.Instance.TCPServerPort;
             }
             else
             {
                 ipAddress = startup.MulticastIPAddress;
                 multicastPort = startup.MulticastPort;
+                tcpPort = startup.TCPServerPort;
+                //Settings.IsTestAccount = true;
             }
 
-            var chatVM = new MainChatViewModel(ipAddress, multicastPort, startup.TCPServerPort);
+            var chatVM = new MainChatViewModel(ipAddress, multicastPort, tcpPort);
 
             MainChatWindow newWindow = new MainChatWindow(chatVM);
             newWindow.Show();
